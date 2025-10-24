@@ -1,90 +1,79 @@
 package ui;
+import model.SchoolController;
 
+import model.Computador;
 import java.util.Scanner;
 
 public class SchoolApp {
-
-    /*
-     * ATENCION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * Agregue los atributos (relaciones) necesarios para conectar esta clase con el
-     * modelo.
-     */
-
-    private Scanner input;
-
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        SchoolController controller = new SchoolController();
 
-        SchoolApp ui = new SchoolApp();
-        ui.menu();
 
-    }
-
-    // Constructor
-    public SchoolApp() {
-        input = new Scanner(System.in);
-    }
-
-    /*
-     * ATENCION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * El siguiente metodo esta incompleto.
-     * Agregue la logica necesaria (instrucciones) para satisfacer los
-     * requerimientos
-     */
-
-    public void menu() {
-
-        System.out.println("Bienvenido a Computaricemos");
-
-        int option = 0;
+        int opcion;
         do {
-            System.out.println("\nMenu Principal");
-            System.out.println("--------------------------------------------------------");
-            System.out.println("Digite alguna de las siguientes opciones");
-            System.out.println("1) Registrar computador");
-            System.out.println("2) Registrar incidente en computador");
-            System.out.println("3) Consultar el computador con más incidentes");
-            System.out.println("0) Salir del sistema");
-            option = input.nextInt();
+           System.out.println("\n ESCUELA COMPUTARICEMOS ");
+            System.out.println("1. Agregar computador");
+            System.out.println("2. Reportar incidente");
+            System.out.println("3. Consultar computador con más incidentes");
+            System.out.println("4. Salir");
+            System.out.print("Opcion: ");
+            opcion = sc.nextInt();
+            sc.nextLine();
 
-            switch (option) {
+            switch (opcion) {
                 case 1:
-                    registrarComputador();
+                    System.out.print("Serial del computador: ");
+                    String serial = sc.nextLine();
+                    System.out.print("Piso (1-5): ");
+                    int piso = sc.nextInt();
+                    sc.nextLine();
+
+                    if (controller.agregarComputador(serial, piso)) {
+
+                        System.out.println(" Computador agregado correctamente.");
+                    } else {
+                        System.out.println(" Error: piso lleno o serial duplicado.");
+                    }
                     break;
+
                 case 2:
-                    registrarIncidenteEnComputador();
+                    System.out.print("Serial del computador: ");
+                    serial = sc.nextLine();
+                    System.out.print("Descripcin del incidente: ");
+                    String desc = sc.nextLine();
+
+                    if (controller.registrarIncidente(serial, desc)) {
+                        System.out.println(" Incidente registrado correctamente.");
+                    } else {
+                        System.out.println(" Computador no encontrado.");
+                    }
                     break;
+
                 case 3:
-                    consultarComputadorConMasIncidentes();
+                    Computador max = controller.computadorConMasIncidentes();
+                    if (max != null) {
+                        System.out.println("\nComputador con más incidentes:");
+                        System.out.println("Serial: " + max.getSerial());
+                        System.out.println("Piso: " + max.getPiso());
+                        System.out.println("Columna: " + max.getColumna());
+                        System.out.println("Incidentes: " + max.getCantidadIncidentes());
+                    } else {
+                        System.out.println(" No hay computadores registrados.");
+                    }
                     break;
-                case 0:
-                    System.out.println("\nGracias por usar nuestros servicios. Adios!");
+
+                case 4:
+                    System.out.println("Programa finalizado.");
                     break;
+
                 default:
-                    System.out.println("\nOpcion invalida. Intente nuevamente.");
+                    System.out.println(" Opcion invalida.");
                     break;
             }
 
-        } while (option != 0);
+        } while (opcion != 4);
 
+        sc.close();
     }
-
-    /*
-     * ATENCION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * Los siguientes metodos estan incompletos.
-     * Agregue la logica necesaria (instrucciones) para satisfacer los
-     * requerimientos
-     */
-
-    public void registrarComputador() {
-
-    }
-
-    public void registrarIncidenteEnComputador() {
-
-    }
-
-    public void consultarComputadorConMasIncidentes() {
-
-    }
-
 }
